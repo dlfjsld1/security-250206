@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -292,6 +293,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 작성")
+    @WithUserDetails("user") //WithUserDetails의 기본값인 user이며 요청 허용되도록 어노테이션 추가
     void write1() throws Exception {
 
         String apiKey = "user1";
