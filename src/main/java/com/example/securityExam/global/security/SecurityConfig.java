@@ -26,6 +26,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/*/posts/{id:\\d+}", "/api/*/posts", "/api/*/posts/{postId:\\d+}/comments")
                                 .permitAll() //이 위에 지정한건 허용하고
+                                .requestMatchers("/api/*/members/login", "/api/*/members/join")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated() // 나머지는 막아라
                 )

@@ -60,7 +60,7 @@ public class ApiV1CommentController {
             @RequestBody
             WriteReqBody reqBody
             ) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
         Comment comment = _write(postId, actor, reqBody.content);
 
         //커멘트가 등록되지 않고 프록시로 존재해 아이디가 없음
@@ -93,7 +93,7 @@ public class ApiV1CommentController {
             @RequestBody
             ModifyReqBody reqBody
     ) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
 
         Post post = postService.getItem(postId).orElseThrow(() ->
                 new ServiceException("404-1", "존재하지 않는 게시글입니다."
@@ -119,7 +119,7 @@ public class ApiV1CommentController {
             @PathVariable
             long id
     ) {
-        Member actor = rq.getAuthenticatedActor();
+        Member actor = rq.getActor();
 
         Post post = postService.getItem(postId).orElseThrow(() ->
                 new ServiceException("404-1", "존재하지 않는 게시글입니다."
