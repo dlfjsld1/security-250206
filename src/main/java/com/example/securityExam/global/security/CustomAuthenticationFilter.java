@@ -49,7 +49,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         }
 
         Member actor = opMember.get();
-        rq.setLogin(actor.getUsername()); // user1이 로그인했다.
+        //rq.setLogin은 security의 SecurityContextHolder에 유저 정보 저장(세션 방식) = 로그인
+        rq.setLogin(actor.getUsername());
 
         //doFilter의 역할은 다음으로 넘어가라는 것. 다음은 다음 필터가 될수도, 그냥 넘어가는 걸수도 있음
         filterChain.doFilter(request, response);
