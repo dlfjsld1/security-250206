@@ -1,5 +1,7 @@
 package com.example.securityExam.global.security;
 
+import com.example.securityExam.global.dto.RsData;
+import com.example.securityExam.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +41,31 @@ public class SecurityConfig {
                 //기본 필터 전 후에 addFilterBefore addFilterAfter로 붙일 수 있음
                 //UsernamePasswordAuthenticationFilter는 기본 필터.
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .authenticationEntryPoint(
+                                        (request, response, authException) -> {
+                                            response.setContentType("application/json;charset=UTF-8");
+                                            response.setStatus(401);
+                                            response.getWriter().write(
+                                                    Ut.Json.toString(
+                                                            new RsData("401-1", "잘못된 인증키입니다.")
+                                                    )
+                                            );
+                                        }
+                                )
+                                .accessDeniedHandler(
+                                        (request, response, authException) -> {
+                                    response.setContentType("application/json;charset=UTF-8");
+                                    response.setStatus(401);
+                                    response.getWriter().write(
+                                            Ut.Json.toString(
+                                                    new RsData("403-1", "접근 권한이 없습니다.")
+                                            )
+                                        );
+                                    }
+                                )
+                );
         ;
         return http.build();
     }
