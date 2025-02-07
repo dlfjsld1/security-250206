@@ -293,7 +293,7 @@ public class ApiV1PostControllerTest {
 
     @Test
     @DisplayName("글 작성")
-    @WithUserDetails("user") //WithUserDetails의 기본값인 user이며 요청 허용되도록 어노테이션 추가
+    @WithUserDetails("user1") //WithUserDetails의 기본값인 user이며 요청 허용되도록 어노테이션 추가
     void write1() throws Exception {
 
         String apiKey = "user1";

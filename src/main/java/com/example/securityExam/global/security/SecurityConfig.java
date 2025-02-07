@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                // csrf 끄기. api 서버는 csrf 끄는게 일반적
                 .csrf((csrf) -> csrf.disable())
         ;
         return http.build();
