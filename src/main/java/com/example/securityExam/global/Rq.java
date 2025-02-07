@@ -5,9 +5,14 @@ import com.example.securityExam.domain.member.member.service.MemberService;
 import com.example.securityExam.global.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.util.List;
 import java.util.Optional;
 
 // Request, Response, Session, Cookie, Header
@@ -31,5 +36,15 @@ public class Rq {
         }
 
         return opActor.get();
+    }
+
+    public void setLogin(String username) {
+        //유저 정보 생성
+        UserDetails user = new User(username, "", List.of());
+
+        //인증 정보 저장소. security는 여기를 확인해 해당 유저가 존재하면 로그인 한 것으로 인식.
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
+        );
     }
 }
