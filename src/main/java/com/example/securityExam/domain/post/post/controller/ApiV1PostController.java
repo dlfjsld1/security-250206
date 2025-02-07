@@ -1,6 +1,7 @@
 package com.example.securityExam.domain.post.post.controller;
 
 import com.example.securityExam.domain.member.member.entity.Member;
+import com.example.securityExam.domain.member.member.service.MemberService;
 import com.example.securityExam.domain.post.post.dto.PageDto;
 import com.example.securityExam.domain.post.post.dto.PostWithContentDto;
 import com.example.securityExam.domain.post.post.entity.Post;
@@ -12,8 +13,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @RestController
@@ -107,7 +111,16 @@ public class ApiV1PostController {
             @Valid
             WriteReqBody reqBody
     ) {
-        Member actor = rq.getAuthenticatedActor();
+
+        // 로그인한 사용자 정보 가져오기
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+
+        if(principal == null) {
+            throw new ServiceException("401-1", "로그인이 필요합니다.");
+        }
+
+        String username = principal.getName();
+        Member actor = memberService.findByUsername(username).get();
         Post post =  postService.write(actor, reqBody.title(), reqBody.content(), reqBody.published(), reqBody.listed());
 
         return new RsData<>(
@@ -160,6 +173,7 @@ public class ApiV1PostController {
         );
     }
 
+    private final MemberService memberService;
 }
 
 
